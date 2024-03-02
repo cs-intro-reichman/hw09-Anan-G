@@ -107,19 +107,18 @@ public class List {
      *  true. Otherwise, returns false. */
     public boolean remove(char chr) {
 
-
         Node current = first;
         Node prev = null;
 
-        if (current == null) return false;
 
-        while(!current.cp.equals(chr) && current != null){
+        while(current != null && !current.cp.equals(chr)){
 
             prev = current;
             current = current.next;
 
         }
 
+        if (current == null) return false;
         if(prev == null) first = first.next;
         else prev.next = current.next;
 

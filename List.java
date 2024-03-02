@@ -111,6 +111,8 @@ public class List {
         Node current = first;
         Node prev = null;
 
+        if (current == null) return false;
+
         while(!current.cp.equals(chr) && current != null){
 
             prev = current;
@@ -118,7 +120,6 @@ public class List {
 
         }
 
-        if (current == null) return false;
         if(prev == null) first = first.next;
         else prev.next = current.next;
 

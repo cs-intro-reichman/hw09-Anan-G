@@ -75,7 +75,7 @@ public class LanguageModel {
 
                 while(j <= i){
 
-                    probs.get(i).cp += probs.get(j).p;
+                    probs.get(i).cp += Math.round(probs.get(j).p);
                     j++;
                 }
 

@@ -91,7 +91,8 @@ public class LanguageModel {
     // Returns a random character from the given probabilities list.
 	public char getRandomChar(List probs) {
 
-        double r = Math.random();
+        double r = randomGenerator.nextDouble();
+        System.out.println(r);
         ListIterator itr = probs.listIterator(0);
         int i = 0;
         CharData first = probs.getFirst();
@@ -104,8 +105,6 @@ public class LanguageModel {
             i++;
 
         }
-
-
 		return ' ';
 	}
 
@@ -136,7 +135,7 @@ public class LanguageModel {
         LanguageModel lm1 = new LanguageModel(0);
         List list1 = new List();
 
-        list1.addFirst(' ');
+        /*list1.addFirst(' ');
         list1.addFirst('e');
         list1.update('e');
         list1.addFirst('t');
@@ -145,7 +144,13 @@ public class LanguageModel {
         list1.addFirst('m');
         list1.update('m');
         list1.addFirst('o');
-        list1.addFirst('c');
+        list1.addFirst('c');*/
+
+        list1.addFirst('e');
+        list1.addFirst('m');
+        list1.addFirst('o');
+        list1.addFirst('h');
+
 
         lm1.calculateProbabilities(list1);
         System.out.println(lm1.getRandomChar(list1));
@@ -160,4 +165,5 @@ public class LanguageModel {
 
 
     }
+  
 }

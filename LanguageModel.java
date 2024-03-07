@@ -92,7 +92,6 @@ public class LanguageModel {
 	public char getRandomChar(List probs) {
 
         double r = randomGenerator.nextDouble();
-        System.out.println(r);
         ListIterator itr = probs.listIterator(0);
         int i = 0;
         CharData first = probs.getFirst();

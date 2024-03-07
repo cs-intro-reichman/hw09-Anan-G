@@ -39,7 +39,7 @@ public class LanguageModel {
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
 	public void calculateProbabilities(List probs) {				
-        
+    
         ListIterator itr = probs.listIterator(0);
         int sum = 0;
         int i = 0;
@@ -90,7 +90,23 @@ public class LanguageModel {
 
     // Returns a random character from the given probabilities list.
 	public char getRandomChar(List probs) {
-		return 'g';
+
+        double r = Math.random();
+        ListIterator itr = probs.listIterator(0);
+        int i = 0;
+        CharData first = probs.getFirst();
+
+        if(first.cp > r) return first.chr;
+
+        while (itr.hasNext()){
+
+            if(probs.get(i).cp > r) return probs.get(i).chr;
+            i++;
+
+        }
+
+
+		return ' ';
 	}
 
     /**
@@ -132,6 +148,7 @@ public class LanguageModel {
         list1.addFirst('c');
 
         lm1.calculateProbabilities(list1);
+        System.out.println(lm1.getRandomChar(list1));
 
         System.out.println(list1.toString());
 

@@ -33,8 +33,45 @@ public class LanguageModel {
 
     /** Builds a language model from the text in the given file (the corpus). */
 	public void train(String fileName) {
-		// Your code goes here
-	}
+
+        String window = "";
+        char c;
+        In in = new In(fileName);
+        List probs; 
+
+        for (int i = 0; i < this.windowLength; i++){
+
+            window += in.readChar();
+
+        }
+
+        while (!in.isEmpty()) {
+
+            c = in.readChar();
+
+            if(CharDataMap.containsKey(window)){
+
+                probs = CharDataMap.get(window);
+
+            } else {
+
+                probs = new List();
+            }
+
+            CharDataMap.put(window, probs);
+            probs.update(c);
+
+
+            window += c;
+            window = window.substring(1);
+
+        }
+
+        for (List probsL : this.CharDataMap.values()){
+                calculateProbabilities(probsL);
+            }
+
+    }
 
     // Computes and sets the probabilities (p and cp fields) of all the
 	// characters in the given list. */
@@ -116,7 +153,25 @@ public class LanguageModel {
 	 */
 	public String generate(String initialText, int textLength) {
 
-        return " ";
+        if(initialText.length() < this.windowLength) return initialText;
+
+        String str = initialText;
+        char c;
+
+        for (int i = 0; i < textLength; i++){
+
+            str = str.substring(str.length()-windowLength);
+
+            if(!CharDataMap.containsKey(str)) return initialText;
+
+            c = this.getRandomChar(CharDataMap.get(str));
+
+            initialText += c;
+            str += c;
+
+        }
+
+        return initialText;
     }
 
     /** Returns a string representing the map of this language model. */
@@ -131,38 +186,21 @@ public class LanguageModel {
 
     public static void main(String[] args) {
 
-        LanguageModel lm1 = new LanguageModel(0);
-        List list1 = new List();
-
-        /*list1.addFirst(' ');
-        list1.addFirst('e');
-        list1.update('e');
-        list1.addFirst('t');
-        list1.update('t');
-        list1.addFirst('i'); 
-        list1.addFirst('m');
-        list1.update('m');
-        list1.addFirst('o');
-        list1.addFirst('c');*/
-
-        list1.addFirst('e');
-        list1.addFirst('m');
-        list1.addFirst('o');
-        list1.addFirst('h');
-
-
-        lm1.calculateProbabilities(list1);
-        System.out.println(lm1.getRandomChar(list1));
-
-        System.out.println(list1.toString());
-
-
-
-
-
-       
-
-
-    }
+        int windowLength = Integer.parseInt(args[0]);
+        String initialText = args[1];
+        int generatedTextLength = Integer.parseInt(args[2]);
+        Boolean randomGeneration = args[3].equals("random");
+        String fileName = args[4];
+        // Create the LanguageModel object
+        LanguageModel lm;
+        if (randomGeneration)
+        lm = new LanguageModel(windowLength);
+        else
+        lm = new LanguageModel(windowLength, 20);
+        // Trains the model, creating the map.
+        lm.train(fileName);
+        // Generates text, and prints it.
+        System.out.println(lm.generate(initialText, generatedTextLength));
   
+    }
 }
